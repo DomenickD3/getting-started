@@ -35,6 +35,10 @@
   ansible.builtin.apt:
     name: sqlite3 
 
+- name: Install the package "nodejs"
+  ansible.builtin.apt:
+    name: nodejs 
+
 - name: Install docker dependencies, namely "ca-certificates", and "gnupg"
   ansible.builtin.apt:
     pkg:

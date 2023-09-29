@@ -27,4 +27,3 @@
     content: "{{ update_and_upgrade.stdout }}"
     dest: "/tmp/apt-get-output.log"
   when: update_and_upgrade_async_result.changed
-

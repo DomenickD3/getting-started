@@ -2,10 +2,5 @@
 - hosts: all 
   connection: local
   roles:
-    role: install
-    tags:
-      - install
-    role: configure 
-    tags:
-      - configure 
-      - dotfiles
+    - install
+    - configure

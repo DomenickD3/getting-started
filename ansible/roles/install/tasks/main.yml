@@ -1,17 +1,17 @@
 ---
-- ansible.builtin.include_tasks: dependencies.yml
+- ansible.builtin.import_tasks: dependencies.yml
   tags:
     - dependencies
+
 - block:
-  become: true
-  - ansible.builtin.include_tasks: apt-setup.yml
-  - ansible.builtin.include_tasks: packages.yml
+  - ansible.builtin.import_tasks: apt-setup.yml
+  - ansible.builtin.import_tasks: packages.yml
     tags:
       - packages
-  - ansible.builtin.include_tasks: applications.yml
+  - ansible.builtin.import_tasks: applications.yml
     tags:
       - applications
-  - ansible.builtin.include_tasks: languages.yml
+  - ansible.builtin.import_tasks: languages.yml
     tags:
       - languages 
-
+  become: true
