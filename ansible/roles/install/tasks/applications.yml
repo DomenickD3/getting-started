@@ -1,33 +1,42 @@
 ---
-  - name: Install "Docker Desktop"
-    ansible.builtin.apt:
-      deb: https://desktop.docker.com/linux/main/amd64/docker-desktop-4.23.0-amd64.deb
+- name: Install "Docker Desktop"
+  ansible.builtin.apt:
+    deb: https://desktop.docker.com/linux/main/amd64/docker-desktop-4.23.0-amd64.deb
 
-  - name: Add apt signing key for "google chrome"
-    ansible.builtin.apt_key:
-      url: https://dl.google.com/linux/linux_signing_key.pub
+- name: Add apt signing key for "google chrome"
+  ansible.builtin.apt_key:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+
+- name: Add "google chrome" into repository sources list using specified filename
+  ansible.builtin.apt_repository:
+    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    filename: google-chrome
+
+- name: Install "google chrome"
+  ansible.builtin.apt:
+    name: "google-chrome-stable"
+    state: latest
+    update_cache: true
+
+- block:
+  - name: Install "atom"
+    shell: snap install atom
+    register: result
+    changed_when: '"already installed" not in result.stderr'
   
-  - name: Add "google chrome" into repository sources list using specified filename
-    ansible.builtin.apt_repository:
-      repo: deb http://dl.google.com/linux/chrome/deb/ stable main
-      state: present
-      filename: google-chrome
-
-  - name: Install "google chrome"
-    ansible.builtin.apt:
-      name: "google-chrome-stable"
-      state: latest
-      update_cache: true
-
   - name: Install "discord"
-    become: true
     shell: snap install discord 
+    register: result
+    changed_when: '"already installed" not in result.stderr'
+
+  - name: Install "firefox"
+    shell: snap install firefox 
+    register: result
+    changed_when: '"already installed" not in result.stderr'
 
   - name: Install "telegram-desktop"
-    become: true
     shell: snap install telegram-desktop
-
-  # r.i.p. Atom
-  - name: Install "atom"
-    become: true
-    shell: snap install atom
+    register: result
+    changed_when: '"already installed" not in result.stderr'
+  become: true
