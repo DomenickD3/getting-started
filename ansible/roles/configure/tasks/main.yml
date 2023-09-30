@@ -2,7 +2,7 @@
 - block:
   - name: Ensure dotfiles repository is cloned locally
     ansible.builtin.git:
-      repo: "git@github.com:DomenickD3/dotfiles.git"
+      repo: "git@github.com:DomenickD3/.dotfiles.git"
       dest: "{{ dotfiles_dir }}"
       version: "master"
       accept_hostkey: true 
