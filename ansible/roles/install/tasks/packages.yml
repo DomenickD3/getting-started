@@ -3,42 +3,8 @@
   ansible.builtin.apt:
     name: curl 
 
-- name: Install the package "wget"
-  ansible.builtin.apt:
-    name: wget 
-
-- name: Install the package "snapd"
-  ansible.builtin.apt:
-    name: snapd 
-
-- name: Install the package "openssl"
-  ansible.builtin.apt:
-    name: openssl 
-
-- name: Install the package "git"
-  ansible.builtin.apt:
-    name: git 
-
-- name: Install the package "vim"
-  ansible.builtin.apt:
-    name: vim 
-
-- name: Install the package "neovim"
-  ansible.builtin.apt:
-    name: neovim 
-
-- name: Install the package "tmux"
-  ansible.builtin.apt:
-    name: tmux 
-
-- name: Install the package "sqlite3"
-  ansible.builtin.apt:
-    name: sqlite3 
-
-- name: Install the package "nodejs"
-  ansible.builtin.apt:
-    name: nodejs 
-
+# BEGIN - DOCKER
+# https://docs.docker.com/engine/install/ubuntu/
 - name: Install docker dependencies, namely "ca-certificates", and "gnupg"
   ansible.builtin.apt:
     pkg:
@@ -55,7 +21,6 @@
     repo: deb https://download.docker.com/linux/ubuntu focal stable
     state: present
 
-# https://docs.docker.com/engine/install/ubuntu/
 - name: Update apt and install (docker-ce, docker-ce-cli, containerd.io, docker-buildx-plugin, docker-compose-plugin
   apt:
     pkg: 
@@ -66,3 +31,44 @@
       - docker-compose-plugin
     state: latest
     update_cache: true
+# END - DOCKER
+
+- name: Install the package "git"
+  ansible.builtin.apt:
+    name: git 
+
+- name: Install the package "neovim"
+  ansible.builtin.apt:
+    name: neovim 
+
+- name: Install the package "nodejs"
+  ansible.builtin.apt:
+    name: nodejs 
+
+- name: Install the package "openssl"
+  ansible.builtin.apt:
+    name: openssl 
+
+- name: Install the package "sqlite3"
+  ansible.builtin.apt:
+    name: sqlite3 
+
+- name: Install the package "snapd"
+  ansible.builtin.apt:
+    name: snapd 
+
+- name: Install the package "stow"
+  ansible.builtin.apt:
+    name: stow 
+
+- name: Install the package "tmux"
+  ansible.builtin.apt:
+    name: tmux 
+
+- name: Install the package "vim"
+  ansible.builtin.apt:
+    name: vim 
+
+- name: Install the package "wget"
+  ansible.builtin.apt:
+    name: wget 
