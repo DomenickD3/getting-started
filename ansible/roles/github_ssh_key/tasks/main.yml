@@ -58,7 +58,7 @@
 
   - name: Add SSH key to public GitHub account
     ansible.builtin.uri:
-      url: https://api.github.com/user/ssh_signing_keys
+      url: https://api.github.com/user/keys
       method: POST
       headers:
         Accept: application/vnd.github+json
