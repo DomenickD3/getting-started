@@ -38,6 +38,16 @@
     ansible.builtin.shell: "stow -R {{ item.path | basename }} --target={{ ansible_env.HOME }}"
     changed_when: false
 
+  - name: Unstow dotfiles
+    with_items: "{{ modules.files }}"
+    environment:
+      STOW_DIR: "{{ dotfiles_dir }}"
+    ansible.builtin.shell: "stow -D {{ item.path | basename }} --target={{ ansible_env.HOME }}"
+    changed_when: false
+    tags:
+      - unstow
+      - never
+
   vars:
     dotfiles_dir: "{{ (ansible_env.HOME, 'Documents', '.dotfiles') | ansible.builtin.path_join }}"
     backup_dir: "{{ (ansible_env.HOME, '.backup') | ansible.builtin.path_join }}"
