@@ -9,12 +9,14 @@
 # - add option to backup existing key if one exists instead of always failing if key exists
 # - add option to specify email-address, and username variable from vars
 
-- block:
-  - name: Verify username
-    ansible.builtin.pause:
-      prompt: "Generate SSH Key for user: \"{{ ansible_user_id }}\"? Press return to continue. Press Ctrl+c and then \"a\" to abort"
-      echo: no 
+- name: Verify username
+  ansible.builtin.pause:
+    prompt: "Generate SSH Key for user: \"{{ ansible_user_id }}\"? Press return to continue. Press Ctrl+c and then \"a\" to abort"
+    echo: no 
+  tags: 
+  - always
 
+- block:
   - name: Enter email address
     ansible.builtin.pause:
       prompt: "Enter email address"
@@ -74,6 +76,5 @@
      
   - debug: 
       msg: "{{ post_ssh_key }}"
-
   tags:
     - upload
