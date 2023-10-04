@@ -12,7 +12,6 @@ To run the install  (main.yml) you can run the following: \
 
 You will be prompted for your password to **sudo as root** before running the playbook.
 
-
 ## Generate & Upload New GitHub SSH Key 
 
 If your new environment needs to interact with private repositories, you will need an SSH key on your system which is linked with your GitHub account.
@@ -20,13 +19,14 @@ If your new environment needs to interact with private repositories, you will ne
 1. Generate a fine-grained [access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with read/write to Git SSH Keys
 2. Run the github_ssh_key.yml playbook
 
-
 ## Playbooks
-##### main.yml
+##### install.yml
 - Perform apt-get update/upgrade *| tags: [install]*
 - Install packages as root *| tags: [install, packages]*
 - Install applications as root *| tags: [install, applications]*
 - Install programming languages *| tags; [install, languages]*
+
+##### configure.yml
 - Clone [dotfiles](https://github.com/DomenickD3/.dotfiles) *| tags: [configure]*
 - Stow dotfiles *| tags: [configure]*
 
