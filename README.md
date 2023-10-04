@@ -8,7 +8,7 @@ A repository to set up my Ubuntu 22.04 environment from scratch
 
 ## Install
 To run the install  (main.yml) you can run the following: \
-```curl -L https://raw.githubusercontent.com/DomenickD3/getting-started/master/getting-started.sh | bash```
+```curl -L https://raw.githubusercontent.com/DomenickD3/getting-started/master/setup.sh | bash```
 
 You will be prompted for your password to **sudo as root** before running the playbook.
 
