@@ -2,9 +2,7 @@
 A repository to set up my Ubuntu 22.04 environment from scratch
 
 ## Requirements
-
-- ansible >= 2.10
-- git 
+- curl (setup.sh installs git and ansible and clones this repository!)
 
 ## Install
 To run the install  (main.yml) you can run the following: \
