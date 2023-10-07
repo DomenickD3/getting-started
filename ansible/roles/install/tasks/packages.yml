@@ -68,13 +68,22 @@
     group: root
     state: link
 
-- name: Install the package "nodejs"
+- name: Add GPG Key for nodejs
+  ansible.builtin.get_url:
+    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+    dest: /etc/apt/keyrings/nodesource-repo.asc
+    mode: '0644'
+    force: true
+
+- name: Add nodesource-repo
+  ansible.builtin.apt_repository:
+    filename: nodesource-repo
+    repo: 'deb [signed-by=/etc/apt/keyrings/nodesource-repo.asc] https://deb.nodesource.com/node_20.x nodistro main"'
+
+- name: Install the package "nodejs"  # comes with npm
   ansible.builtin.apt:
     name: nodejs
-
-- name: Install the package "npm"
-  ansible.builtin.apt:
-    name: npm
+    update_cache: true
 
 - name: Install the package "openssl"
   ansible.builtin.apt:
