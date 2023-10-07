@@ -3,4 +3,4 @@
   hosts: all
   connection: local
   roles:
-    - roles/github_ssh_key
+    - github_ssh_key
