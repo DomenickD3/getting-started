@@ -1,10 +1,10 @@
 ---
 - name: Install "go"
   become: true
-  shell: snap install --classic go
+  ansible.builtin.command: snap install --classic go
   register: result
   changed_when: '"already installed" not in result.stderr'
 
 - name: Install "python"
   ansible.builtin.apt:
-    name: python3 
+    name: python3

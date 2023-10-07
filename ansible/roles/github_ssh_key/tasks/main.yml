@@ -11,70 +11,76 @@
 
 - name: Verify username
   ansible.builtin.pause:
-    prompt: "Generate SSH Key for user: \"{{ ansible_user_id }}\"? Press return to continue. Press Ctrl+c and then \"a\" to abort"
-    echo: no 
-  tags: 
-  - always
+    prompt: 'Generate SSH Key for user: "{{ ansible_user_id }}"? Press return to continue. Press Ctrl+c and then "a" to abort'
+    echo: false
+  tags:
+    - always
 
-- block:
-  - name: Enter email address
-    ansible.builtin.pause:
-      prompt: "Enter email address"
-    register: email_address
-
-  - name: Create .ssh directory (mode 0700) if DNE 
-    file:
-      path: "{{ (ansible_env.HOME, '.ssh') | ansible.builtin.path_join }}"
-      state: directory
-      mode: '0700'
-
-  - name: Stat git ssh private key
-    stat:
-      path: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa' ) | ansible.builtin.path_join }}"
-    register: git_ssh_key
-
-  - name: Fail if GitHub SSH Key already exists
-    ansible.builtin.fail:
-      msg: Git SSH Key already exists
-    when: git_ssh_key.stat.exists
-
-  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa) and encrypted private key
-    community.crypto.openssh_keypair:
-      path: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa' ) | ansible.builtin.path_join }}"
-      force: true 
-
-  - name: Evaluating the authentication agent & adding the key...
-    shell: |
-      eval "$(ssh-agent)"
-      ssh-add "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa' ) | ansible.builtin.path_join }}"
+- name: Generate SSH Key for GitHub
   tags:
     - generate
+  block:
+    - name: Enter email address
+      ansible.builtin.pause:
+        prompt: Enter email address
+      register: email_address
 
-- block:
-  - name: Enter GitHub Access Token
-    ansible.builtin.pause:
-      prompt: "Enter Personal GitHub Access Token"
-      echo: no
-    register: access_token
-    no_log: true
+    - name: Create .ssh directory (mode 0700) if DNE
+      ansible.builtin.file:
+        path: "{{ (ansible_env.HOME, '.ssh') | ansible.builtin.path_join }}"
+        state: directory
+        mode: "0700"
 
-  - name: Add SSH key to public GitHub account
-    ansible.builtin.uri:
-      url: https://api.github.com/user/keys
-      method: POST
-      headers:
-        Accept: application/vnd.github+json
-        Authorization: "Bearer {{ access_token.user_input }}"
-        X-GitHub-Api-Version: 2022-11-28
-      body_format: json
-      body:
-        key: "{{ lookup('ansible.builtin.file', (ansible_env.HOME, '.ssh', 'id_git_rsa.pub')|ansible.builtin.path_join)}}"
-        title: "ssh_rsa {{ ansible_hostname }}-{{ ansible_date_time.date }}"  
-      status_code: 201
-      # status_code: [ 201, 422 ]
-    register: post_ssh_key
-     
-  - debug: 
-      msg: "{{ post_ssh_key }}"
+    - name: Stat git ssh private key
+      ansible.builtin.stat:
+        path: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
+      register: git_ssh_key
+
+    - name: Fail if GitHub SSH Key already exists
+      ansible.builtin.fail:
+        msg: Git SSH Key already exists
+      when: git_ssh_key.stat.exists
+
+    - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa) and encrypted private key
+      community.crypto.openssh_keypair:
+        path: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
+        force: true
+
+    - name: Evaluating the authentication agent & adding the key
+      ansible.builtin.shell: |
+        eval "$(ssh-agent)"
+        ssh-add "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
+      register: shell_cmd
+      failed_when: shell_cmd.rc != 0
+      changed_when: shell_cmd.rc != 0
+
+- name: Upload SSH Key to GitHub
   tags:
     - upload
+  block:
+    - name: Enter GitHub Access Token
+      ansible.builtin.pause:
+        prompt: Enter Personal GitHub Access Token
+        echo: false
+      register: access_token
+      no_log: true
+
+    - name: Add SSH key to public GitHub account
+      ansible.builtin.uri:
+        url: https://api.github.com/user/keys
+        method: POST
+        headers:
+          Accept: application/vnd.github+json
+          Authorization: Bearer {{ access_token.user_input }}
+          X-GitHub-Api-Version: 2022-11-28
+        body_format: json
+        body:
+          key: "{{ lookup('ansible.builtin.file', (ansible_env.HOME, '.ssh', 'id_git_rsa.pub') | ansible.builtin.path_join) }}"
+          title: ssh_rsa {{ ansible_hostname }}-{{ ansible_date_time.date }}
+        status_code: 201
+      # status_code: [ 201, 422 ]
+      register: post_ssh_key
+
+    - name: Print API output
+      ansible.builtin.debug:
+        msg: "{{ post_ssh_key }}"
