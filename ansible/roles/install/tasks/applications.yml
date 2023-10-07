@@ -15,28 +15,26 @@
 
 - name: Install "google chrome"
   ansible.builtin.apt:
-    name: "google-chrome-stable"
+    name: google-chrome-stable
     state: latest
     update_cache: true
 
-- block:
-  - name: Install "atom"
-    shell: snap install atom
-    register: result
-    changed_when: '"already installed" not in result.stderr'
-  
-  - name: Install "discord"
-    shell: snap install discord 
-    register: result
-    changed_when: '"already installed" not in result.stderr'
+- name: Install "atom"
+  ansible.builtin.command: snap install atom
+  register: result
+  changed_when: '"already installed" not in result.stderr'
 
-  - name: Install "firefox"
-    shell: snap install firefox 
-    register: result
-    changed_when: '"already installed" not in result.stderr'
+- name: Install "discord"
+  ansible.builtin.command: snap install discord
+  register: result
+  changed_when: '"already installed" not in result.stderr'
 
-  - name: Install "telegram-desktop"
-    shell: snap install telegram-desktop
-    register: result
-    changed_when: '"already installed" not in result.stderr'
-  become: true
+- name: Install "firefox"
+  ansible.builtin.command: snap install firefox
+  register: result
+  changed_when: '"already installed" not in result.stderr'
+
+- name: Install "telegram-desktop"
+  ansible.builtin.command: snap install telegram-desktop
+  register: result
+  changed_when: '"already installed" not in result.stderr'

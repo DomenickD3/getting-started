@@ -1,0 +1,6 @@
+---
+- name: Generate and Upload SSH Key for GitHub
+  hosts: all
+  connection: local
+  roles:
+    - github_ssh_key
