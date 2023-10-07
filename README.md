@@ -36,4 +36,4 @@ If your new environment needs to interact with private repositories, you will ne
 
 ## Running Playbooks
 ```cd ~/Documents/getting-started/ansible``` \
-```ansible-playbook -i hosts <playbook> -t <tags> -vv```
+```ansible-playbook -i hosts playbooks/<playbook> -t <tags> -vv```
