@@ -19,6 +19,8 @@
 - name: Generate SSH Key for GitHub
   tags:
     - generate
+  vars:
+    github_ssh_key_file: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
   block:
     - name: Enter email address
       ansible.builtin.pause:
@@ -31,25 +33,17 @@
         state: directory
         mode: "0700"
 
-    - name: Stat git ssh private key
-      ansible.builtin.stat:
-        path: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
-      register: git_ssh_key
-
-    - name: Fail if GitHub SSH Key already exists
-      ansible.builtin.fail:
-        msg: Git SSH Key already exists
-      when: git_ssh_key.stat.exists
-
-    - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa) and encrypted private key
-      community.crypto.openssh_keypair:
-        path: "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
-        force: true
+    - name: Generate SSH key
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        generate_ssh_key: true
+        ssh_key_bits: 4096
+        ssh_key_file: "{{ github_ssh_key_file }}"
 
     - name: Evaluating the authentication agent & adding the key
       ansible.builtin.shell: |
         eval "$(ssh-agent)"
-        ssh-add "{{ (ansible_env.HOME, '.ssh', 'id_git_rsa') | ansible.builtin.path_join }}"
+        ssh-add "{{ github_ssh_key_file }}"
       register: shell_cmd
       failed_when: shell_cmd.rc != 0
       changed_when: shell_cmd.rc != 0
@@ -75,10 +69,9 @@
           X-GitHub-Api-Version: 2022-11-28
         body_format: json
         body:
-          key: "{{ lookup('ansible.builtin.file', (ansible_env.HOME, '.ssh', 'id_git_rsa.pub') | ansible.builtin.path_join) }}"
+          key: "{{ lookup('ansible.builtin.file', github_ssh_key_file) }}"
           title: ssh_rsa {{ ansible_hostname }}-{{ ansible_date_time.date }}
         status_code: 201
-      # status_code: [ 201, 422 ]
       register: post_ssh_key
 
     - name: Print API output
