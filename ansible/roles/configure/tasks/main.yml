@@ -16,6 +16,7 @@
         dest: "{{ dotfiles_dir }}"
         version: master
         accept_hostkey: true
+      ignore_errors: "{{ ansible_check_mode }}"
 
     - name: Create .backup directory to move system files before stow
       ansible.builtin.file:
