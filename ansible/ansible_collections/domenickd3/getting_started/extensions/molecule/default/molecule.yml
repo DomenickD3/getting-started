@@ -10,6 +10,12 @@ platforms:
     image: ubuntu:22.04
     pre_build_image: false
     # dockerfile: Dockerfile.j2
+    # command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
   config_options:
