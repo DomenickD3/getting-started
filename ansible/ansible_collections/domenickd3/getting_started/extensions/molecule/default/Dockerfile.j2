@@ -13,5 +13,5 @@ ENV {{ var }} {{ value }}
 {% endif %}
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3 sudo bash ca-certificates iproute2 python3-apt aptitude;
+
 CMD ["sh", "-c", "while true; do sleep 10000; done"]
-# RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3 sudo bash ca-certificates iproute2 python3-apt aptitude && apt-get clean && rm -rf /var/lib/apt/lists/*;
