@@ -1,9 +1,12 @@
 ---
-- name: Install "go"
-  become: true
-  ansible.builtin.command: snap install --classic go
-  register: result
-  changed_when: '"already installed" not in result.stderr'
+
+- name: Add golang-go ppa repo
+  ansible.builtin.apt_repository:
+    repo: ppa:longsleep/golang-backports
+
+- name: Install "golang-go"
+  ansible.builtin.apt:
+    name: golang-go
 
 - name: Install "python"
   ansible.builtin.apt:
