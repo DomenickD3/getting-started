@@ -24,3 +24,5 @@ jobs:
       
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
+        env:
+          ANSIBLE_COLLECTIONS_PATH: ./collections
