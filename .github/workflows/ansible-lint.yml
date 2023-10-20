@@ -24,18 +24,3 @@ jobs:
     
       - name: Run ansible-lint
         uses: ansible/ansible-lint@v6
-        # with:
-        #   working_directory: "${{ github.workspace }}"
-
-
-      # - name: Install ansible-lint from source
-      #   run: pip3 install git+https://github.com/ansible/ansible-lint
-
-      # - name: Run ansible-lint
-      #   run: ansible-lint
-      
-      # - name: Run ansible-lint
-      #   uses: ansible/ansible-lint@main
-      
-      #   env:
-      #     ANSIBLE_COLLECTIONS_PATH: ./collections
