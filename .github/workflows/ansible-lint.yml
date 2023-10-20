@@ -1,4 +1,6 @@
+---
 name: ansible-lint
+
 on:
   pull_request:
     branches: ["master"]
@@ -8,7 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
         with:
-          working_directory: ansible
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible
+
+      - name: Install ansible collection
+        run: ansible-galaxy collection install -r requirements.yml -p "${{ github.workspace }}"/collections
+    
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@v6

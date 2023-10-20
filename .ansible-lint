@@ -1,0 +1,9 @@
+offline: true
+skip_list:
+  - '403'
+exclude_paths:
+  - .pre-commit-config.yaml
+  - /changelogs/
+  - /collections/
+  - /molecule/
+  - .github/workflows

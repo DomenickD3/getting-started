@@ -3,4 +3,4 @@
   hosts: all
   connection: local
   roles:
-    - install
+    - domenickd3.my_ubuntu_collection.install
