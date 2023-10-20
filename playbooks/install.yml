@@ -2,7 +2,5 @@
 - name: Install packages, applications, and languages
   hosts: all
   connection: local
-  collections:
-    - domenickd3.my_ubuntu_collection
   roles:
-    - install
+    - domenickd3.my_ubuntu_collection.install
