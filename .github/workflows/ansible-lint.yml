@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run ansible-lint
         uses: ansible/ansible-lint@v6
+        with:
+          working_directory: "${{ github.workspace }}"
 
       # - name: Set up Python 3.
       #   uses: actions/setup-python@v2
@@ -24,13 +26,14 @@ jobs:
       # - name: Install ansible collection
       #   run: ansible-galaxy install -r requirements.yml -p ./collections
 
-      - name: Install ansible-lint from source
-        run: pip3 install git+https://github.com/ansible/ansible-lint
+      # - name: Install ansible-lint from source
+      #   run: pip3 install git+https://github.com/ansible/ansible-lint
 
       # - name: Run ansible-lint
       #   run: ansible-lint
       
       # - name: Run ansible-lint
       #   uses: ansible/ansible-lint@main
+      
       #   env:
       #     ANSIBLE_COLLECTIONS_PATH: ./collections
