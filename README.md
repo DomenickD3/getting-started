@@ -17,23 +17,23 @@ If your new environment needs to interact with private repositories, you will ne
 1. Generate a fine-grained [access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with read/write to Git SSH Keys
 2. Run the github_ssh_key.yml playbook
 
+## Installing collection requirements.yml
+Installing the collections needed for this repository is performed by setup.sh, but if you need to install them yourself, do the following: \
+```ansible-galaxy collection install domenickd3.my_ubuntu_collection -p $HOME/Documents/getting-started/collections```
+
 ## Playbooks
-##### install.yml
-- Perform apt-get update/upgrade *| tags: [install]*
-- Install packages as root *| tags: [install, packages]*
-- Install applications as root *| tags: [install, applications]*
-- Install programming languages *| tags; [install, languages]*
+#### install.yml
+- Imports [domenickd3.my_ubuntu_collection.install playbook](https://github.com/DomenickD3/my-ubuntu-collection/tree/master/roles/install/README.md)
 
-##### configure.yml
-- Clone [dotfiles](https://github.com/DomenickD3/.dotfiles) *| tags: [configure]*
-- Stow dotfiles *| tags: [configure]*
+#### configure.yml
+- Imports [domenickd3.my_ubuntu_collection.configure playbook](https://github.com/DomenickD3/my-ubuntu-collection/tree/master/roles/configure/README.md)
 
-##### github_ssh_key.yml
+#### github_ssh_key.yml
 - Create .ssh directory with correct permissions if DNE *| tags: [generate]*
 - Generate SSH key *| tags: [generate]*
 - Add SSH key to authentication agent (ssh-key add) *| tags: [generate]*
 - Upload SSH Key to GitHub account` *| tags: [upload]*
 
 ## Running Playbooks
-```cd ~/Documents/getting-started/ansible``` \
+```cd ~/Documents/getting-started``` \
 ```ansible-playbook -i hosts playbooks/<playbook> -t <tags> -vv```
