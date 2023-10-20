@@ -10,5 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible
+
+      - name: Install ansible collection
+        run: ansible-galaxy install -r requirements.yml -p ./collections
+      
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
