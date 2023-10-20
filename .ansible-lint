@@ -6,3 +6,4 @@ exclude_paths:
   - /changelogs/
   - /collections/
   - /molecule/
+  - .github/workflows
