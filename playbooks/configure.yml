@@ -2,5 +2,9 @@
 - name: Configure environment, download and stow dotifles
   hosts: all
   connection: local
+  vars:
+    configure_user: domenickd3
+  collections:
+    - domenickd3.my_ubuntu_collection
   roles:
     - configure
