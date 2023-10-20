@@ -1,4 +1,6 @@
-# getting-started                                                                                                                                                                                           
+![lint workflow](https://github.com/domenickd3/getting-started/actions/workflows/ansible-lint.yml/badge.svg)
+
+# getting-started                                                                                                                                                                                  
 A repository to set up my Ubuntu 22.04 environment from scratch
 
 ## Requirements
